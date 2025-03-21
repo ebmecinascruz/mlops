@@ -1,6 +1,0 @@
-name: mlops
-dependencies:
-  - pandas
-  - mlflow
-  - scikit-learn
-  - numpy
