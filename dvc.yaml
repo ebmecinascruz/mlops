@@ -1,15 +1,8 @@
 stages:
-  prepare:
-    cmd: python src/create_features_w_params.py
+  preprocess:
+    cmd: python src/preprocessing.py
     deps:
-      - data/adult.data
-      - data/adult.test
-      - src/create_features.py
+      - src/preprocessing.py
+      - data/ObesityDataSet_raw_and_data_sinthetic.csv
     outs:
-      - data/pipeline.pkl
-      - data/processed_train_data.csv
-      - data/processed_test_data.csv 
-    params: 
-      - features.chi2percentile
-      - features.train_path
-      - features.test_path
+      - data/obesity_preprocessed.csv

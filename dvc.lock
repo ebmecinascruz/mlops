@@ -33,3 +33,19 @@ stages:
       hash: md5
       md5: adf63b6ce20f7ee74f63d5dabb325226
       size: 10829967
+  preprocess:
+    cmd: python src/preprocessing.py
+    deps:
+    - path: data/ObesityDataSet_raw_and_data_sinthetic.csv
+      hash: md5
+      md5: aff636fcccdf0a24ed7186e48bad2548
+      size: 263646
+    - path: src/preprocessing.py
+      hash: md5
+      md5: b1889cbb4ab393eb23c998c521c67d04
+      size: 732
+    outs:
+    - path: data/obesity_preprocessed.csv
+      hash: md5
+      md5: 7c97023ea59a85fa4825ffcc850af3d8
+      size: 642498
