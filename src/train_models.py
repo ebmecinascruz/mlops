@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 # MLflow config
 mlflow.set_tracking_uri("https://service-run-394279149427.us-west2.run.app")
-mlflow.set_experiment("lab6")
+mlflow.set_experiment("lab6_ml")
 
 def split_data(X, y, seed):
     X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2, random_state=seed)

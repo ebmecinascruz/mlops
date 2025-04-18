@@ -1,5 +1,5 @@
 from metaflow import FlowSpec, step, Parameter
-from data_prep import load_and_preprocess_data, encode_data
+from data_prep import load_and_split
 from train_models import (
     train_logistic_regression,
     train_random_forest,
@@ -23,9 +23,7 @@ class ObesityMLFlow(FlowSpec):
     @step
     def start(self):
         print("🔹 Loading and preprocessing data...")
-        df = load_and_preprocess_data()
-        self.df_encoded = encode_data(df)
-        self.target = df["NObeyesdad"]
+        self.X, self.y = load_and_split(seed=self.seed)
         self.next(self.select_features)
 
     @step
@@ -33,11 +31,14 @@ class ObesityMLFlow(FlowSpec):
         print("🔹 Selecting features using Random Forest + RFECV...")
         rf = RandomForestClassifier(n_estimators=140, max_features=7, oob_score=True, random_state=self.seed)
         rfecv = RFECV(estimator=rf, step=1, cv=StratifiedKFold(5), scoring="accuracy")
-        rfecv.fit(self.df_encoded, self.target)
+        rfecv.fit(self.X, self.y)
 
-        self.selected_features = self.df_encoded.columns[rfecv.get_support()].tolist()
-        self.X = self.df_encoded[self.selected_features]
-        self.y = self.target
+        # Select the top features
+        self.selected_features = self.X.columns[rfecv.get_support()].tolist()
+        self.X = self.X[self.selected_features]  # reduce X to selected features
+
+        import joblib
+        joblib.dump(self.X.columns.tolist(), "data/selected_feature_columns.pkl")
 
         print(f"✅ Selected features: {self.selected_features}")
         self.next(self.logistic, self.rf, self.tree)
