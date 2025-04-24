@@ -4,3 +4,11 @@ dependencies:
   - mlflow
   - scikit-learn
   - numpy
+  - pip
+  - pip:
+    - dvc
+    - dvc-s3
+    - metaflow
+    - kubernetes
+    - google-cloud-storage
+    - pylint
